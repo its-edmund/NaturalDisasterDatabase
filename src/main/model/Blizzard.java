@@ -6,4 +6,8 @@ public class Blizzard extends Disaster{
 		super("Blizzard", loc);
 	}
 	
+	public Location getLoc()
+	{
+		return getLoc();
+	}
 }
