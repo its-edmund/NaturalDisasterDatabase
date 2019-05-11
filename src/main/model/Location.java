@@ -1,8 +1,12 @@
 package main.model;
 
+import eu.bitm.NominatimReverseGeocoding.Address;
+import eu.bitm.NominatimReverseGeocoding.NominatimReverseGeocodingJAPI;
+
 public class Location {
 	private double x;
 	private double y;
+<<<<<<< HEAD
 	
 	public double getX()
 	{
@@ -14,4 +18,17 @@ public class Location {
 		return y;
 	}
 	
+=======
+	private Address locationAddress;
+
+	public Location(double xCoord, double yCoord) {
+		NominatimReverseGeocodingJAPI nominatim1 = new NominatimReverseGeocodingJAPI(); // create instance with default
+																						// zoom level (18)
+		
+		locationAddress = nominatim1.getAdress(x, y); //returns Address object for the given position
+	}
+	
+	
+
+>>>>>>> 29fbc1c5cc3906370e5735491733cef72ac9006f
 }
