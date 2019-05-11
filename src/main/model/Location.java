@@ -6,9 +6,9 @@ import eu.bitm.NominatimReverseGeocoding.NominatimReverseGeocodingJAPI;
 public class Location {
 	private double x;
 	private double y;
-	Address locationAddress;
+	private Address locationAddress;
 
-	public Location(xCoord, yCoord) {
+	public Location(double xCoord, double yCoord) {
 		NominatimReverseGeocodingJAPI nominatim1 = new NominatimReverseGeocodingJAPI(); // create instance with default
 																						// zoom level (18)
 		
