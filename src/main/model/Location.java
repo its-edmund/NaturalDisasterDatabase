@@ -6,8 +6,7 @@ import eu.bitm.NominatimReverseGeocoding.NominatimReverseGeocodingJAPI;
 public class Location {
 	private double x;
 	private double y;
-<<<<<<< HEAD
-	
+
 	public double getX()
 	{
 		return x;
@@ -17,8 +16,7 @@ public class Location {
 	{
 		return y;
 	}
-	
-=======
+
 	private Address locationAddress;
 
 	public Location(double xCoord, double yCoord) {
@@ -29,6 +27,4 @@ public class Location {
 	}
 	
 	
-
->>>>>>> 29fbc1c5cc3906370e5735491733cef72ac9006f
 }
