@@ -15,19 +15,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.controller.MapController;
 import main.model.Disaster;
+import main.model.MapModel;
 
 public class Window extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) {
-
-		StackPane root = new StackPane();
-
-		MapController controller = new MapController();
-		MapModel model = new MapModel();
-		MapView view = new MapView();
 		
-		Scene scene = new Scene(root, 450, 250);
+		MapModel model = new MapModel();
+		MapController controller = new MapController(model);
+		MapView view = new MapView(controller, model, primaryStage);
+		
+		Scene scene = new Scene(view.asParent(), 450, 250);
 
 		primaryStage.setTitle("Natural Disaster Database");
 		primaryStage.setScene(scene);

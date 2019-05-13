@@ -2,20 +2,66 @@ package main.view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import main.controller.MapController;
 import main.model.Disaster;
+import main.model.MapModel;
 
 public class MapView {
-	public MapView() {
+
+	private GridPane view;
+	private MapController controller;
+	private MapModel model;
+	private Stage primaryStage;
+
+	public MapView(MapController controller, MapModel model, Stage primaryStage) {
+
+		this.controller = controller;
+		this.model = model;
+		this.primaryStage = primaryStage;
+		
+		createAndConfigurePane();
+		
+		createButton();
+
+	}
+
+	public Parent asParent() {
+		return view;
+	}
+	
+	private void createAndConfigurePane() {
+        view = new GridPane();
+
+        ColumnConstraints leftCol = new ColumnConstraints();
+        leftCol.setHalignment(HPos.RIGHT);
+        leftCol.setHgrow(Priority.NEVER);
+
+        ColumnConstraints rightCol = new ColumnConstraints();
+        rightCol.setHgrow(Priority.SOMETIMES);
+
+        view.getColumnConstraints().addAll(leftCol, rightCol);
+
+        view.setAlignment(Pos.CENTER);
+        view.setHgap(5);
+        view.setVgap(10);
+    }
+
+	public void createButton() {
 		Button button = new Button();
 		button.setText("Open a New Window");
 
@@ -78,7 +124,7 @@ public class MapView {
 			}
 		});
 
-		StackPane root = new StackPane();
-		root.getChildren().add(button);
+		view.getChildren().add(button);
 	}
+
 }
