@@ -2,6 +2,6 @@ package main.model;
 
 import java.util.ArrayList;
 
-public class Map {
+public class MapModel {
 	private ArrayList<Disaster> disasters;
 }
