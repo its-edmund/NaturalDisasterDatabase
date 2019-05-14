@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -33,9 +34,9 @@ public class MapView {
 		this.controller = controller;
 		this.model = model;
 		this.primaryStage = primaryStage;
-		
+
 		createAndConfigurePane();
-		
+
 		createButton();
 
 	}
@@ -43,23 +44,23 @@ public class MapView {
 	public Parent asParent() {
 		return view;
 	}
-	
+
 	private void createAndConfigurePane() {
-        view = new GridPane();
+		view = new GridPane();
 
-        ColumnConstraints leftCol = new ColumnConstraints();
-        leftCol.setHalignment(HPos.RIGHT);
-        leftCol.setHgrow(Priority.NEVER);
+		ColumnConstraints leftCol = new ColumnConstraints();
+		leftCol.setHalignment(HPos.RIGHT);
+		leftCol.setHgrow(Priority.NEVER);
 
-        ColumnConstraints rightCol = new ColumnConstraints();
-        rightCol.setHgrow(Priority.SOMETIMES);
+		ColumnConstraints rightCol = new ColumnConstraints();
+		rightCol.setHgrow(Priority.SOMETIMES);
 
-        view.getColumnConstraints().addAll(leftCol, rightCol);
+		view.getColumnConstraints().addAll(leftCol, rightCol);
 
-        view.setAlignment(Pos.CENTER);
-        view.setHgap(5);
-        view.setVgap(10);
-    }
+		view.setAlignment(Pos.CENTER);
+		view.setHgap(5);
+		view.setVgap(10);
+	}
 
 	public void createButton() {
 		Button button = new Button();
@@ -78,7 +79,7 @@ public class MapView {
 				Button submit = new Button("Submit");
 				Button cancel = new Button("Cancel");
 				ComboBox dropdown = new ComboBox<Disaster>();
-				dropdown.getItems().addAll("Fire", "Earthquake", "Blizzard");
+				dropdown.getItems().addAll("Fire", "Earthquake", "Blizzard", "Hurricane", "Tornado", "Flood");
 
 				GridPane gridLayout = new GridPane();
 				gridLayout.setHgap(10);
@@ -92,6 +93,36 @@ public class MapView {
 				yLocField.setPrefWidth(width - 70 / 4);
 				submit.setPrefWidth((width - 70 / 4));
 				cancel.setPrefWidth((width - 70 / 4));
+
+				// Sets action for submit button
+				submit.setOnAction(new EventHandler<ActionEvent>() {
+					
+					private void showAlert(Alert.AlertType alertType, javafx.stage.Window owner, String title, String message) {
+					    Alert alert = new Alert(alertType);
+					    alert.setTitle(title);
+					    alert.setHeaderText(null);
+					    alert.setContentText(message);
+					    alert.initOwner(owner);
+					    alert.show();
+					}
+					
+					@Override
+					public void handle(ActionEvent event) {
+						if (!xLocField.getText().matches("[0-9]+") || !(xLocField.getText().length() > 2)) {
+							showAlert(Alert.AlertType.ERROR, gridLayout.getScene().getWindow(), "Form Error!",
+									"Please enter valid X coordinate!");
+							return;
+						}
+						if (!yLocField.getText().matches("[0-9]+") || !(yLocField.getText().length() > 2)) {
+							showAlert(Alert.AlertType.ERROR, gridLayout.getScene().getWindow(), "Form Error!",
+									"Please enter valid Y coordinate!");
+							return;
+						}
+
+						showAlert(Alert.AlertType.CONFIRMATION, gridLayout.getScene().getWindow(),
+								"Registration Successful!", "A " + disasterType.getText() + " has been recorded.");
+					}
+				});
 
 				gridLayout.add(disasterType, 0, 0);
 				gridLayout.add(dropdown, 1, 0, 3, 1);

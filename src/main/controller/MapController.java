@@ -14,9 +14,14 @@ import main.model.Disaster;
 import main.model.MapModel;
 
 public class MapController {
-	public final MapModel map;
+	public MapModel map;
 	
 	public MapController(MapModel map) {
         this.map = map;
     }
+	
+	public void addDisaster(Disaster disaster)
+	{
+		
+	}
 }

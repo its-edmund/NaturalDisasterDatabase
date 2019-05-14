@@ -4,4 +4,21 @@ import java.util.ArrayList;
 
 public class MapModel {
 	private ArrayList<Disaster> disasters;
+	
+	public MapModel()
+	{
+		disasters = new ArrayList<Disaster>();
+	}
+	
+	public void addDisaster(Disaster disaster)
+	{
+		disasters.add(disaster);
+	}
+	
+	public ArrayList<Disaster> getDisasters()
+	{
+		return disasters;
+	}
+	
+	
 }

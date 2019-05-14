@@ -1,8 +1,15 @@
 package main.model;
 
 public abstract class Disaster {
+	
 	private String type;
 	private Location loc;
+	
+	public Disaster(String type, double xCoord, double yCoord)
+	{
+		this.type = type;
+		this.loc = new Location(xCoord, yCoord);
+	}
 	
 	public String getType()
 	{
@@ -23,9 +30,5 @@ public abstract class Disaster {
 	{
 		this.loc = newLoc;
 	}
-	public Disaster(String type, Location loc)
-	{
-		this.type = type;
-		this.loc = loc;
-	}
+	
 }
