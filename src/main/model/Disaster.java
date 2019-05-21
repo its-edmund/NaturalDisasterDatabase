@@ -31,4 +31,6 @@ public abstract class Disaster {
 		this.loc = newLoc;
 	}
 	
+	
+	
 }

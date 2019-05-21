@@ -46,7 +46,7 @@ public class MapView {
 	}
 
 	private void createAndConfigurePane() {
-		view = new GridPane();
+		view = new GridPane(); 	
 
 		ColumnConstraints leftCol = new ColumnConstraints();
 		leftCol.setHalignment(HPos.RIGHT);
@@ -63,10 +63,10 @@ public class MapView {
 	}
 
 	public void createButton() {
-		Button button = new Button();
-		button.setText("Open a New Window");
+		Button addDisasterButton = new Button();
+		addDisasterButton.setText("Report a Disaster");
 
-		button.setOnAction(new EventHandler<ActionEvent>() {
+		addDisasterButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 
@@ -77,10 +77,17 @@ public class MapView {
 				TextField yLocField = new TextField("Y Location");
 				TextField xLocField = new TextField("X Location");
 				Button submit = new Button("Submit");
-				Button cancel = new Button("Cancel");
+
+				Button cancelButton = new Button("Cancel");
+				cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						Stage stage = (Stage) cancelButton.getScene().getWindow();
+						stage.close();
+					}
+				});
+
 				ComboBox dropdown = new ComboBox<Disaster>();
 				dropdown.getItems().addAll("Fire", "Earthquake", "Blizzard", "Hurricane", "Tornado", "Flood");
-
 				GridPane gridLayout = new GridPane();
 				gridLayout.setHgap(10);
 				gridLayout.setVgap(10);
@@ -92,20 +99,21 @@ public class MapView {
 				yLoc.setPrefWidth(width - 70 / 4);
 				yLocField.setPrefWidth(width - 70 / 4);
 				submit.setPrefWidth((width - 70 / 4));
-				cancel.setPrefWidth((width - 70 / 4));
+				cancelButton.setPrefWidth((width - 70 / 4));
 
 				// Sets action for submit button
 				submit.setOnAction(new EventHandler<ActionEvent>() {
-					
-					private void showAlert(Alert.AlertType alertType, javafx.stage.Window owner, String title, String message) {
-					    Alert alert = new Alert(alertType);
-					    alert.setTitle(title);
-					    alert.setHeaderText(null);
-					    alert.setContentText(message);
-					    alert.initOwner(owner);
-					    alert.show();
+
+					private void showAlert(Alert.AlertType alertType, javafx.stage.Window owner, String title,
+							String message) {
+						Alert alert = new Alert(alertType);
+						alert.setTitle(title);
+						alert.setHeaderText(null);
+						alert.setContentText(message);
+						alert.initOwner(owner);
+						alert.show();
 					}
-					
+
 					@Override
 					public void handle(ActionEvent event) {
 						if (!xLocField.getText().matches("[0-9]+") || !(xLocField.getText().length() > 2)) {
@@ -131,7 +139,7 @@ public class MapView {
 				gridLayout.add(yLoc, 2, 1);
 				gridLayout.add(yLocField, 3, 1);
 				gridLayout.add(submit, 3, 2);
-				gridLayout.add(cancel, 2, 2);
+				gridLayout.add(cancelButton, 2, 2);
 
 				Scene secondScene = new Scene(gridLayout, width, 200);
 
@@ -155,7 +163,7 @@ public class MapView {
 			}
 		});
 
-		view.getChildren().add(button);
+		view.add(addDisasterButton, 0, 2);
 	}
 
 }
