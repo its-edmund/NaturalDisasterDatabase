@@ -24,7 +24,7 @@ public class Window extends Application {
 		
 		MapModel model = new MapModel();
 		MapController controller = new MapController(model);
-		MapView view = new MapView(controller, model, primaryStage);
+		DisasterMapView view = new DisasterMapView(controller, model, primaryStage);
 		
 		Scene scene = new Scene(view.asParent(), 450, 250);
 
