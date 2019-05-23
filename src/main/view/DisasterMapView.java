@@ -1,5 +1,17 @@
 package main.view;
 
+import com.teamdev.jxmaps.GeocoderCallback;
+import com.teamdev.jxmaps.GeocoderRequest;
+import com.teamdev.jxmaps.GeocoderResult;
+import com.teamdev.jxmaps.GeocoderStatus;
+import com.teamdev.jxmaps.InfoWindow;
+import com.teamdev.jxmaps.Map;
+import com.teamdev.jxmaps.MapReadyHandler;
+import com.teamdev.jxmaps.MapStatus;
+import com.teamdev.jxmaps.MapViewOptions;
+import com.teamdev.jxmaps.Marker;
+import com.teamdev.jxmaps.javafx.MapView;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -12,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -22,21 +35,22 @@ import main.controller.MapController;
 import main.model.Disaster;
 import main.model.MapModel;
 
-public class MapView {
+public class DisasterMapView {
 
-	private GridPane view;
+	private BorderPane view;
 	private MapController controller;
 	private MapModel model;
 	private Stage primaryStage;
+	private MapView map;
 
-	public MapView(MapController controller, MapModel model, Stage primaryStage) {
+	public DisasterMapView(MapController controller, MapModel model, Stage primaryStage) {
 
 		this.controller = controller;
 		this.model = model;
 		this.primaryStage = primaryStage;
 
+		map = createMap();
 		createAndConfigurePane();
-
 		createButton();
 
 	}
@@ -46,7 +60,8 @@ public class MapView {
 	}
 
 	private void createAndConfigurePane() {
-		view = new GridPane(); 	
+		view = new BorderPane(); 
+		view.setCenter(map);
 
 		ColumnConstraints leftCol = new ColumnConstraints();
 		leftCol.setHalignment(HPos.RIGHT);
@@ -55,11 +70,45 @@ public class MapView {
 		ColumnConstraints rightCol = new ColumnConstraints();
 		rightCol.setHgrow(Priority.SOMETIMES);
 
-		view.getColumnConstraints().addAll(leftCol, rightCol);
+	}
+	
+	public MapView createMap()
+	{
+		MapViewOptions options = new MapViewOptions();
+        options.importPlaces();
+        options.setApiKey("AIzaSyB9gxtKbP-uz76ZaopyADO53Q2BpeTGTiE");
+        
+        final MapView mapView = new MapView(options);
 
-		view.setAlignment(Pos.CENTER);
-		view.setHgap(5);
-		view.setVgap(10);
+        mapView.setOnMapReadyHandler(new MapReadyHandler() {
+            @Override
+            public void onMapReady(MapStatus status) {
+                if (status == MapStatus.MAP_STATUS_OK) {
+                    final Map map = mapView.getMap();
+                    map.setZoom(5.0);
+                    GeocoderRequest request = new GeocoderRequest();
+                    request.setAddress("1280 Johnson Ave, San Jose CA");
+
+                    mapView.getServices().getGeocoder().geocode(request, new GeocoderCallback(map) {
+                        @Override
+                        public void onComplete(GeocoderResult[] result, GeocoderStatus status) {
+                            if (status == GeocoderStatus.OK) {
+                                map.setCenter(result[0].getGeometry().getLocation());
+                                Marker marker = new Marker(map);
+                                marker.setPosition(result[0].getGeometry().getLocation());
+
+                                final InfoWindow window = new InfoWindow(map);
+                                window.setContent("Disaster: " + "blah");
+                                window.open(map, marker);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        
+        return mapView;
+        
 	}
 
 	public void createButton() {
@@ -163,7 +212,7 @@ public class MapView {
 			}
 		});
 
-		view.add(addDisasterButton, 0, 2);
+		view.setBottom(addDisasterButton);
 	}
 
 }
