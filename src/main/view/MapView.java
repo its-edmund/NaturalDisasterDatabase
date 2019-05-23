@@ -116,17 +116,23 @@ public class MapView {
 
 					@Override
 					public void handle(ActionEvent event) {
-						if (!xLocField.getText().matches("[0-9]+") || !(xLocField.getText().length() > 2)) {
+						if (!xLocField.getText().matches("[0-9]+.	") || !(xLocField.getText().length() > 2)) {
 							showAlert(Alert.AlertType.ERROR, gridLayout.getScene().getWindow(), "Form Error!",
 									"Please enter valid X coordinate!");
 							return;
 						}
-						if (!yLocField.getText().matches("[0-9]+") || !(yLocField.getText().length() > 2)) {
+						if (!yLocField.getText().matches("[0-9]+.") || !(yLocField.getText().length() > 2)) {
 							showAlert(Alert.AlertType.ERROR, gridLayout.getScene().getWindow(), "Form Error!",
 									"Please enter valid Y coordinate!");
 							return;
 						}
-
+						
+						//String disType = dropdown.getId();
+						//double xCoord = parseDouble(xLocField.getText());
+						//double yCoord = parseDouble(yLocField.getText());
+						//Disaster userDisaster = new Disaster(disType, xCoord, yCoord);
+						//model.addDisaster(userDisaster);
+						
 						showAlert(Alert.AlertType.CONFIRMATION, gridLayout.getScene().getWindow(),
 								"Registration Successful!", "A " + disasterType.getText() + " has been recorded.");
 					}

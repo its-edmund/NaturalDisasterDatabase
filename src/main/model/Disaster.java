@@ -1,6 +1,6 @@
 package main.model;
 
-public abstract class Disaster {
+public class Disaster {
 	
 	private String type;
 	private Location loc;
