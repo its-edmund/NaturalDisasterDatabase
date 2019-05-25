@@ -7,5 +7,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/Users/vishalvictor/Downloads/reverseGeocoding (1).jar"/>
+	<classpathentry kind="lib" path="/Users/vishalvictor/Downloads/jxmaps-1.3.1/lib/jxmaps-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/vishalvictor/Downloads/jxmaps-1.3.1/lib/jxmaps-linux32-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/vishalvictor/Downloads/jxmaps-1.3.1/lib/jxmaps-linux64-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/vishalvictor/Downloads/jxmaps-1.3.1/lib/jxmaps-win-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/vishalvictor/Downloads/jxmaps-1.3.1/lib/jxmaps-mac-1.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/vishalvictor/Downloads/license.jar"/>
+	<classpathentry kind="lib" path="//Lhsnas/Students/My Documents/vvictor324/My Documents/reverseGeocoding.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
