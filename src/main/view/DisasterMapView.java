@@ -41,7 +41,8 @@ public class DisasterMapView {
 	private MapController controller;
 	private MapModel model;
 	private Stage primaryStage;
-	private MapView map;
+	private MapView mapView;
+	private Map mapGUI;
 
 	public DisasterMapView(MapController controller, MapModel model, Stage primaryStage) {
 
@@ -49,7 +50,7 @@ public class DisasterMapView {
 		this.model = model;
 		this.primaryStage = primaryStage;
 
-		map = createMap();
+		mapView = createMap();
 		createAndConfigurePane();
 		createButton();
 
@@ -60,8 +61,8 @@ public class DisasterMapView {
 	}
 
 	private void createAndConfigurePane() {
-		view = new BorderPane(); 
-		view.setCenter(map);
+		view = new BorderPane();
+		view.setCenter(mapView);
 
 		ColumnConstraints leftCol = new ColumnConstraints();
 		leftCol.setHalignment(HPos.RIGHT);
@@ -71,62 +72,58 @@ public class DisasterMapView {
 		rightCol.setHgrow(Priority.SOMETIMES);
 
 	}
-	
+
 	/**
 	 * Checks if a given parameter for the x and y coordinates are doubles
+	 * 
 	 * @param s is string, either the x-coordinate or the y-coordinate
 	 * @return true if its a double or false if it is not a double
 	 */
-	public boolean isDouble(String s)
-	{
-		try
-		{
+	public boolean isDouble(String s) {
+		try {
 			Double d = Double.parseDouble(s);
-		}
-		catch(NumberFormatException e) 
-		{
+		} catch (NumberFormatException e) {
 			return false;
 		}
 		return true;
 	}
-	
-	public MapView createMap()
-	{
+
+	public MapView createMap() {
 		MapViewOptions options = new MapViewOptions();
-        options.importPlaces();
-        options.setApiKey("AIzaSyB9gxtKbP-uz76ZaopyADO53Q2BpeTGTiE");
-        
-        final MapView mapView = new MapView(options);
+		options.importPlaces();
+		options.setApiKey("AIzaSyB9gxtKbP-uz76ZaopyADO53Q2BpeTGTiE");
 
-        mapView.setOnMapReadyHandler(new MapReadyHandler() {
-            @Override
-            public void onMapReady(MapStatus status) {
-                if (status == MapStatus.MAP_STATUS_OK) {
-                    final Map map = mapView.getMap();
-                    map.setZoom(5.0);
-                    GeocoderRequest request = new GeocoderRequest();
-                    request.setAddress("1280 Johnson Ave, San Jose CA");
+		mapView = new MapView(options);
 
-                    mapView.getServices().getGeocoder().geocode(request, new GeocoderCallback(map) {
-                        @Override
-                        public void onComplete(GeocoderResult[] result, GeocoderStatus status) {
-                            if (status == GeocoderStatus.OK) {
-                                map.setCenter(result[0].getGeometry().getLocation());
-                                Marker marker = new Marker(map);
-                                marker.setPosition(result[0].getGeometry().getLocation());
+		mapView.setOnMapReadyHandler(new MapReadyHandler() {
+			@Override
+			public void onMapReady(MapStatus status) {
+				if (status == MapStatus.MAP_STATUS_OK) {
+					mapGUI = mapView.getMap();
+					mapGUI.setZoom(5.0);
+					GeocoderRequest request = new GeocoderRequest();
+					request.setAddress("1280 Johnson Ave, San Jose CA");
 
-                                final InfoWindow window = new InfoWindow(map);
-                                window.setContent("Disaster: " + "blah");
-                                window.open(map, marker);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-        
-        return mapView;
-        
+					mapView.getServices().getGeocoder().geocode(request, new GeocoderCallback(mapGUI) {
+						@Override
+						public void onComplete(GeocoderResult[] result, GeocoderStatus status) {
+							if (status == GeocoderStatus.OK) {
+								mapGUI.setCenter(result[0].getGeometry().getLocation());
+								Marker marker = new Marker(mapGUI);
+								marker.setPosition(result[0].getGeometry().getLocation());
+
+								final InfoWindow window = new InfoWindow(mapGUI);
+								window.setContent("Disaster: " + "blah");
+								window.open(mapGUI, marker);
+							}
+						}
+					});
+				}
+			}
+		});
+
+		return mapView;
+
 	}
 
 	public void createButton() {
@@ -139,10 +136,10 @@ public class DisasterMapView {
 
 				int width = 600;
 				Label disasterType = new Label("Type of Disaster:");
-				Label xLoc = new Label("X Coordinate:");
-				Label yLoc = new Label("Y Coordinate:");
-				TextField yLocField = new TextField("Y Location");
-				TextField xLocField = new TextField("X Location");
+				Label cityLabel = new Label("City:");
+				Label countryLabel = new Label("Country:");
+				TextField cityField = new TextField("City");
+				TextField countryField = new TextField("Country");
 				Button submit = new Button("Submit");
 
 				Button cancelButton = new Button("Cancel");
@@ -161,10 +158,10 @@ public class DisasterMapView {
 				gridLayout.setPadding(new Insets(10, 10, 10, 10));
 				disasterType.setPrefWidth(width / 4);
 				dropdown.setPrefWidth(width - disasterType.getWidth());
-				xLoc.setPrefWidth(width - 70 / 4);
-				xLocField.setPrefWidth(width - 70 / 4);
-				yLoc.setPrefWidth(width - 70 / 4);
-				yLocField.setPrefWidth(width - 70 / 4);
+				cityLabel.setPrefWidth(width - 70 / 4);
+				cityField.setPrefWidth(width - 70 / 4);
+				countryLabel.setPrefWidth(width - 70 / 4);
+				countryField.setPrefWidth(width - 70 / 4);
 				submit.setPrefWidth((width - 70 / 4));
 				cancelButton.setPrefWidth((width - 70 / 4));
 
@@ -183,18 +180,8 @@ public class DisasterMapView {
 
 					@Override
 					public void handle(ActionEvent event) {
-						if (isDouble(xLocField.getText()) || !(xLocField.getText().length() > 2)) {
-							showAlert(Alert.AlertType.ERROR, gridLayout.getScene().getWindow(), "Form Error!",
-									"Please enter valid X coordinate!");
-							return;
-						}
-						if (isDouble(yLocField.getText()) || !(yLocField.getText().length() > 2)) {
-							showAlert(Alert.AlertType.ERROR, gridLayout.getScene().getWindow(), "Form Error!",
-									"Please enter valid Y coordinate!");
-							return;
-						}
 						
-						Disaster userDisaster = new Disaster((String) dropdown.getValue(), Double.parseDouble(xLocField.getText()), Double.parseDouble(yLocField.getText()));
+						Disaster userDisaster = new Disaster((String) dropdown.getValue(), cityField.getText(), countryField.getText());
 						model.addDisaster(userDisaster);
 						for(Disaster disaster : model.getDisasters())
 						{
@@ -202,16 +189,31 @@ public class DisasterMapView {
 							
 						}
 						showAlert(Alert.AlertType.CONFIRMATION, gridLayout.getScene().getWindow(),
-								"Registration Successful!", "A " + disasterType.getText() + " has been recorded.");
+								"Registration Successful!", "A " + dropdown.getValue() + " has been recorded.");
+						GeocoderRequest request = new GeocoderRequest();
+						request.setAddress(cityField.getText() + ", " + countryField.getText());
+						mapView.getServices().getGeocoder().geocode(request, new GeocoderCallback(mapGUI) {
+							@Override
+							public void onComplete(GeocoderResult[] result, GeocoderStatus status) {
+								if (status == GeocoderStatus.OK) {
+									mapGUI.setCenter(result[0].getGeometry().getLocation());
+									Marker marker = new Marker(mapGUI);
+									marker.setPosition(result[0].getGeometry().getLocation());
+									final InfoWindow window = new InfoWindow(mapGUI);
+									window.setContent("Disaster: " + dropdown.getValue());
+									window.open(mapGUI, marker);
+								}
+							}
+						});
 					}
 				});
 
 				gridLayout.add(disasterType, 0, 0);
 				gridLayout.add(dropdown, 1, 0, 3, 1);
-				gridLayout.add(xLoc, 0, 1);
-				gridLayout.add(xLocField, 1, 1);
-				gridLayout.add(yLoc, 2, 1);
-				gridLayout.add(yLocField, 3, 1);
+				gridLayout.add(cityLabel, 0, 1);
+				gridLayout.add(cityField, 1, 1);
+				gridLayout.add(countryLabel, 2, 1);
+				gridLayout.add(countryField, 3, 1);
 				gridLayout.add(submit, 3, 2);
 				gridLayout.add(cancelButton, 2, 2);
 

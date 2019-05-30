@@ -4,8 +4,12 @@ import eu.bitm.NominatimReverseGeocoding.Address;
 import eu.bitm.NominatimReverseGeocoding.NominatimReverseGeocodingJAPI;
 
 public class Location {
+	
 	private double x;
 	private double y;
+	private String city;
+	private String country;
+	private Address locationAddress;
 
 	public double getX()
 	{
@@ -16,14 +20,25 @@ public class Location {
 	{
 		return y;
 	}
+	
+	public String getCity()
+	{
+		return city;
+	}
+	
+	public String getCountry()
+	{
+		return country;
+	}
 
-	private Address locationAddress;
-
-	public Location(double xCoord, double yCoord) {
-		NominatimReverseGeocodingJAPI nominatim1 = new NominatimReverseGeocodingJAPI(); // create instance with default
+	public Location(String city, String country) {
+		
+		this.city = city;
+		this.country = country;
+		//NominatimReverseGeocodingJAPI nominatim1 = new NominatimReverseGeocodingJAPI(); // create instance with default
 																						// zoom level (18)
 		
-		locationAddress = nominatim1.getAdress(x, y); //returns Address object for the given position
+		//locationAddress = nominatim1.getAdress(x, y); //returns Address object for the given position
 	}
 	
 	

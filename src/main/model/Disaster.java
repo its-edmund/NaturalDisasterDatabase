@@ -5,10 +5,10 @@ public class Disaster {
 	private String type;
 	private Location loc;
 	
-	public Disaster(String type, double xCoord, double yCoord)
+	public Disaster(String type, String city, String country)
 	{
 		this.type = type;
-		this.loc = new Location(xCoord, yCoord);
+		this.loc = new Location(city, country);
 	}
 	
 	public String getType()
@@ -29,6 +29,11 @@ public class Disaster {
 	public void setLoc(Location newLoc)
 	{
 		this.loc = newLoc;
+	}
+	
+	public String toString()
+	{
+		return loc.getCity() + ", " + loc.getCountry();
 	}
 	
 	
